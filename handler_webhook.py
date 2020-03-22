@@ -11,26 +11,28 @@ slack_response = None
 def handle(event, context):
     global slack_response
     try:
+        print(event)
         event_body = urllib.parse.unquote_plus(event["body"])
         event_body = json.loads(event_body)
 
         if "challenge" in event_body:
             return Response.handle(event_body["challenge"], 200)
 
+        if slack_response is None:
+            slack_response = SlackRespond()
+
         slack_event = event_body["event"]
 
-        if "bot_id" in slack_event:
-            print("Ignore integration bot message")
-        else:
+        if "bot_id" not in slack_event:
             text = slack_event["text"]
             response = "Tickr bot says: " + text
 
-            if slack_response is None:
-                slack_response = SlackRespond()
+            print(response)
+            print(slack_event)
 
             slack_response.send(response, slack_event)
 
-        return Response.handle("ok", 200)
+        return Response.handle("", 204)
 
     except Exception as e:
         msg = f"Unable to process request: {str(e)}"

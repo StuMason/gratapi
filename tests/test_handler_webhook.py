@@ -58,8 +58,8 @@ class TestHandlerWebhook(unittest.TestCase):
         text_response = "Tickr bot says: Hello"
         ret = handle(apigw_text_event(), "")
         body = json.loads(ret["body"])
-        self.assertEqual(ret["statusCode"], "200")
-        self.assertEqual(body, "ok")
+        self.assertEqual(ret["statusCode"], "204")
+        self.assertEqual(body, "")
         mock_send.assert_called_with(text_response, event)
 
     @patch("logging.exception")

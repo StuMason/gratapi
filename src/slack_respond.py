@@ -21,4 +21,5 @@ class SlackRespond:
             "https://slack.com/api/chat.postMessage", data=data, method="POST"
         )
         request.add_header("Content-Type", "application/x-www-form-urlencoded")
-        urllib.request.urlopen(request).read()
+        readed = urllib.request.urlopen(request).read()
+        print(readed)
