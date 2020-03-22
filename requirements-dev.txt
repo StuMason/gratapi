@@ -1,0 +1,7 @@
+moto
+requests_mock
+flake8
+autopep8
+pre-commit
+pytest-cov
+pyTest
