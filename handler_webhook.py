@@ -11,7 +11,6 @@ slack_response = None
 def handle(event, context):
     global slack_response
     try:
-        print(event)
         event_body = urllib.parse.unquote_plus(event["body"])
         event_body = json.loads(event_body)
 

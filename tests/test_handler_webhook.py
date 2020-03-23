@@ -49,8 +49,8 @@ class TestHandlerWebhook(unittest.TestCase):
     def test_ignores_bot_message(self):
         ret = handle(apigw_bot_event(), "")
         body = json.loads(ret["body"])
-        self.assertEqual(ret["statusCode"], "200")
-        self.assertEqual(body, "ok")
+        self.assertEqual(ret["statusCode"], "204")
+        self.assertEqual(body, "")
 
     @patch("src.slack_respond.SlackRespond.send")
     def test_handler_webhook_text(self, mock_send):

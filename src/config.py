@@ -42,5 +42,5 @@ class Config:
 
     def initialise_slack(self):
         self.bot_token = None
-        if "BOT_OATH_TOKEN" in os.environ:
-            self.bot_token = os.environ.get("BOT_OATH_TOKEN")
+        if "BOT_OAUTH_TOKEN" in os.environ:
+            self.bot_token = os.environ.get("BOT_OAUTH_TOKEN")

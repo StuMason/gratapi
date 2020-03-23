@@ -14,8 +14,10 @@ class TestConfig(unittest.TestCase):
     @patch.dict(os.environ, {"APP_ENV": "testing"})
     @patch.dict(os.environ, {"APP_NAME": "bot"})
     @patch.dict(os.environ, {"APP_REGION": "eu-west-1"})
+    @patch.dict(os.environ, {"BOT_OAUTH_TOKEN": "foo"})
     def test_all_os_env_variables_present(self):
         config = Config()
         self.assertEqual(config.app_env, "testing")
         self.assertEqual(config.app_name, "bot")
         self.assertEqual(config.app_region, "eu-west-1")
+        self.assertEqual(config.bot_token, "foo")
