@@ -24,7 +24,13 @@ def handle(event, context):
 
         if "bot_id" not in slack_event:
             text = slack_event["text"]
-            response = "Tickr bot says: " + text
+            response = "I am tickrbot."
+            if "hello" in text:
+                response = "Hello!"
+            if "cycle" in text:
+                response = "Returns Cycle Time"
+            if "deply" in text:
+                response = "Deploy!!!"
 
             print(response)
             print(slack_event)
