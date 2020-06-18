@@ -31,6 +31,21 @@ Globals:
         APP_CLIENT_SECRET: !Ref AppClientSecret
 
 Resources:
+
+  Gratapi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: GratApi
+      StageName: test
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: "arn:aws:cognito-idp:eu-west-1:645571371616:userpool/eu-west-1_omQ17WWBq"
+
   GratapiWrite:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -42,7 +57,10 @@ Resources:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /write
+            RestApiId: !Ref Gratapi
             Method: POST
+            Auth:
+              Authorizer: CognitoAuthorizer
 
   GratApiCognitoAuth:
     Type: AWS::Serverless::Function
@@ -57,15 +75,5 @@ Resources:
           Type: Api
           Properties:
             Path: /auth
+            RestApiId: !Ref Gratapi
             Method: POST
-
-Outputs:
-  GratpiWriteApi:
-    Description: "API Gateway endpoint URL for Prod stage for Gratapi"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/write/"
-  GratapiWrite:
-    Description: "Gratapi Lambda Function ARN"
-    Value: !GetAtt GratapiWrite.Arn
-  GratapiWriteIamRole:
-    Description: "Implicit IAM Role created for Gratapi"
-    Value: !GetAtt GratapiWrite.Arn
