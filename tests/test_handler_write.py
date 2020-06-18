@@ -2,13 +2,7 @@ import json
 import unittest
 from unittest.mock import patch
 
-from handler_webhook import handle
-
-
-def apigw_challenge_event():
-    return {
-        "body": '{"challenge":"foo"}',
-    }
+from handler_write import handle
 
 
 def apigw_bot_event():
@@ -40,12 +34,6 @@ def apigw_text_event():
 
 
 class TestHandlerWebhook(unittest.TestCase):
-    def test_handler_webhook_challenge(self):
-        ret = handle(apigw_challenge_event(), "")
-        body = json.loads(ret["body"])
-        self.assertEqual(ret["statusCode"], "200")
-        self.assertEqual(body, "foo")
-
     def test_ignores_bot_message(self):
         ret = handle(apigw_bot_event(), "")
         body = json.loads(ret["body"])

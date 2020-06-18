@@ -29,6 +29,10 @@ build-local:
 	cp -fr .env src/.env
 	sam build -u --debug -t ./template-local.yaml -m ./requirements.txt
 
+deploy:
+	make build
+	sam deploy
+
 .SILENT: help
 help: ## Show this help message
 	set -x

@@ -8,14 +8,13 @@ class Config:
         load_dotenv()
         self.initialise_app()
         self.initialise_s3()
-        self.initialise_slack()
 
     def initialise_app(self):
         self.app_env = "local"
         if "APP_ENV" in os.environ:
             self.app_env = os.environ.get("APP_ENV")
 
-        self.app_name = "tickr-bot"
+        self.app_name = "gratapi"
         if "APP_NAME" in os.environ:
             self.app_name = os.environ.get("APP_NAME")
 
@@ -39,8 +38,3 @@ class Config:
         self.s3_endpoint = None
         if "S3_ENDPOINT" in os.environ:
             self.s3_endpoint = os.environ.get("S3_ENDPOINT")
-
-    def initialise_slack(self):
-        self.bot_token = None
-        if "BOT_OAUTH_TOKEN" in os.environ:
-            self.bot_token = os.environ.get("BOT_OAUTH_TOKEN")

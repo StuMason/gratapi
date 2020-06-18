@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  tickrbot
+  Gratapi
 
-  Sample SAM Template for tickrbot
+  Sample SAM Template for Gratapi
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -17,11 +17,11 @@ Globals:
         PYTHONPATH: "/var/task/src:/var/task/lib"
 
 Resources:
-  SlackbotWebhook:
+  GratapiWrite:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: .
-      Handler: handler_webhook.handle
+      Handler: handler_write.handle
       Runtime: python3.8
       Events:
         HelloWorld:
