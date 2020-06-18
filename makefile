@@ -1,3 +1,7 @@
+#!make
+include .env
+export $(shell sed 's/=.*//' .env)
+
 install: ## Install required libs
 	pip3 install -r requirements.txt
 	pip3 install -r requirements-dev.txt
@@ -31,7 +35,7 @@ build-local:
 
 deploy:
 	make build
-	sam deploy
+	sam deploy --parameter-overrides AppClientId=$$APP_CLIENT_ID AppClientSecret=$$APP_CLIENT_SECRET UserPoolId=$$USER_POOL_ID
 
 .SILENT: help
 help: ## Show this help message

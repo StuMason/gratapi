@@ -5,7 +5,18 @@ Description: >
 
   Sample SAM Template for Gratapi
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Parameters:
+    UserPoolId:
+      Type: String
+      Description: Userpool ID
+      Default: userpoolid
+    AppClientId:
+      Type: String
+      Default: appclientid
+    AppClientSecret:
+      Type: String
+      Default: appclientsecret
+
 Globals:
   Function:
     Runtime: python3.7
@@ -15,6 +26,9 @@ Globals:
       Variables:
         PATH: "/var/task/bin/"
         PYTHONPATH: "/var/task/src:/var/task/lib"
+        USER_POOL_ID: !Ref UserPoolId
+        APP_CLIENT_ID: !Ref AppClientId
+        APP_CLIENT_SECRET: !Ref AppClientSecret
 
 Resources:
   GratapiWrite:
