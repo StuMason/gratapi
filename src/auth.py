@@ -11,15 +11,15 @@ from src.config import Config
 class Auth:
     def __init__(self):
         config = Config()
-        self.USER_POOL_ID = config.user_pool_id
-        self.CLIENT_ID = config.app_client_id
-        self.CLIENT_SECRET = config.app_client_secret
+        self.user_pool_id = config.user_pool_id
+        self.client_id = config.app_client_id
+        self.client_secret = config.app_client_secret
         self.cognito_client = boto3.client("cognito-idp")
 
     def get_secret_hash(self, username):
-        msg = username + self.CLIENT_ID
+        msg = username + self.client_id
         digest = hmac.new(
-            str(self.CLIENT_SECRET).encode("utf-8"),
+            str(self.client_secret).encode("utf-8"),
             msg=str(msg).encode("utf-8"),
             digestmod=hashlib.sha256,
         ).digest()
@@ -29,8 +29,8 @@ class Auth:
     def initiate_auth(self, username, password):
         try:
             resp = self.cognito_client.admin_initiate_auth(
-                UserPoolId=self.USER_POOL_ID,
-                ClientId=self.CLIENT_ID,
+                UserPoolId=self.user_pool_id,
+                ClientId=self.client_id,
                 AuthFlow="ADMIN_NO_SRP_AUTH",
                 AuthParameters={
                     "USERNAME": username,
@@ -53,8 +53,8 @@ class Auth:
     def refresh_auth(self, username, refresh_token):
         try:
             resp = self.cognito_client.admin_initiate_auth(
-                UserPoolId=self.USER_POOL_ID,
-                ClientId=self.CLIENT_ID,
+                UserPoolId=self.user_pool_id,
+                ClientId=self.client_id,
                 AuthFlow="REFRESH_TOKEN_AUTH",
                 AuthParameters={
                     "REFRESH_TOKEN": refresh_token,
