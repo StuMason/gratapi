@@ -2,7 +2,7 @@ import json
 import logging
 import urllib
 
-from src.auth import Auth
+from src.authenticate.auth import Auth
 from src.response import Response
 
 

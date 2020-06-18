@@ -26,7 +26,7 @@ def apigw_text_event():
 
 
 class TestHandlerAuth(unittest.TestCase):
-    @patch("src.auth.Auth.enticate")
+    @patch("src.authenticate.auth.Auth.enticate")
     def test_handler_auth_user(self, mock_auth):
         mock_auth.return_value = {"response": "good"}
         ret = handle(apigw_text_event(), "")
