@@ -5,7 +5,18 @@ Description: >
 
   Sample SAM Template for Gratapi
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Parameters:
+    UserPoolId:
+      Type: String
+      Description: Userpool ID
+      Default: userpoolid
+    AppClientId:
+      Type: String
+      Default: appclientid
+    AppClientSecret:
+      Type: String
+      Default: appclientsecret
+
 Globals:
   Function:
     Runtime: python3.7
@@ -15,8 +26,26 @@ Globals:
       Variables:
         PATH: "/var/task/bin/"
         PYTHONPATH: "/var/task/src:/var/task/lib"
+        USER_POOL_ID: !Ref UserPoolId
+        APP_CLIENT_ID: !Ref AppClientId
+        APP_CLIENT_SECRET: !Ref AppClientSecret
 
 Resources:
+
+  Gratapi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: GratApi
+      StageName: test
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: "arn:aws:cognito-idp:eu-west-1:645571371616:userpool/eu-west-1_omQ17WWBq"
+
   GratapiWrite:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -28,18 +57,23 @@ Resources:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /write
+            RestApiId: !Ref Gratapi
             Method: POST
+            Auth:
+              Authorizer: CognitoAuthorizer
 
-Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  GratpiWriteApi:
-    Description: "API Gateway endpoint URL for Prod stage for Gratapi"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/write/"
-  GratapiWrite:
-    Description: "Gratapi Lambda Function ARN"
-    Value: !GetAtt GratapiWrite.Arn
-  GratapiWriteIamRole:
-    Description: "Implicit IAM Role created for Gratapi"
-    Value: !GetAtt GratapiWrite.Arn
+  GratApiCognitoAuth:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: handler_auth.handle
+      Runtime: python3.7
+      Policies:
+        - AmazonCognitoPowerUser
+      Events:
+        Write:
+          Type: Api
+          Properties:
+            Path: /auth
+            RestApiId: !Ref Gratapi
+            Method: POST

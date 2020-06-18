@@ -8,6 +8,7 @@ class Config:
         load_dotenv()
         self.initialise_app()
         self.initialise_s3()
+        self.initialise_cognito()
 
     def initialise_app(self):
         self.app_env = "local"
@@ -38,3 +39,16 @@ class Config:
         self.s3_endpoint = None
         if "S3_ENDPOINT" in os.environ:
             self.s3_endpoint = os.environ.get("S3_ENDPOINT")
+
+    def initialise_cognito(self):
+        self.user_pool_id = None
+        if "USER_POOL_ID" in os.environ:
+            self.user_pool_id = os.environ.get("USER_POOL_ID")
+
+        self.app_client_id = None
+        if "APP_CLIENT_ID" in os.environ:
+            self.app_client_id = os.environ.get("APP_CLIENT_ID")
+
+        self.app_client_secret = None
+        if "APP_CLIENT_SECRET" in os.environ:
+            self.app_client_secret = os.environ.get("APP_CLIENT_SECRET")
