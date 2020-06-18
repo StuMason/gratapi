@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Runtime: python3.8
+    Runtime: python3.7
     Timeout: 180
     MemorySize: 128
     Environment:
@@ -22,24 +22,24 @@ Resources:
     Properties:
       CodeUri: .
       Handler: handler_write.handle
-      Runtime: python3.8
+      Runtime: python3.7
       Events:
-        HelloWorld:
+        Write:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /incoming
+            Path: /write
             Method: POST
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Slack Webook"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/incoming/"
-  SlackbotWebhook:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt SlackbotWebhook.Arn
-  SlackbotWebhookIamRole:
-    Description: "Implicit IAM Role created for Slack Webook"
-    Value: !GetAtt SlackbotWebhookRole.Arn
+  GratpiWriteApi:
+    Description: "API Gateway endpoint URL for Prod stage for Gratapi"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/write/"
+  GratapiWrite:
+    Description: "Gratapi Lambda Function ARN"
+    Value: !GetAtt GratapiWrite.Arn
+  GratapiWriteIamRole:
+    Description: "Implicit IAM Role created for Gratapi"
+    Value: !GetAtt GratapiWrite.Arn

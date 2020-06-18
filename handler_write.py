@@ -12,7 +12,7 @@ def handle(event, context):
 
         print(event, event_body, context)
 
-        return Response.handle("", 204)
+        return Response.handle(event_body, 200)
 
     except Exception as e:
         msg = f"Unable to process request: {str(e)}"

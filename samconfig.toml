@@ -1,0 +1,9 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "gratapi"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-11x5mf5f3ylgv"
+s3_prefix = "gratapi"
+region = "eu-west-1"
+capabilities = "CAPABILITY_IAM"
