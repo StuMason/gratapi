@@ -1,5 +1,6 @@
 import json
 import unittest
+from datetime import datetime
 from unittest.mock import patch
 
 from handler_write import handle
@@ -7,15 +8,24 @@ from handler_write import handle
 
 def apigw_text_event():
     return {
-        "body": '{"event": {"grat":"Hello"}}',
+        "body": '["IAGF Testing"]',
         "resource": "/{proxy+}",
         "requestContext": {
+            "requestTimeEpoch": 1592487787,
             "resourceId": "123456",
             "apiId": "1234567890",
             "resourcePath": "/{proxy+}",
             "httpMethod": "POST",
             "identity": {"apiKey": "", "sourceIp": "127.0.0.1", "accountId": ""},
             "stage": "prod",
+            "authorizer": {
+                "claims": {
+                    "sub": "e205-884c-8-bdde3e",
+                    "email_verified": "true",
+                    "auth_time": "1592484669",
+                    "email": "email@user.co.uk",
+                }
+            },
         },
         "queryStringParameters": {"foo": "bar"},
         "pathParameters": {"proxy": "/examplepath"},
@@ -26,11 +36,16 @@ def apigw_text_event():
 
 
 class TestHandlerWrite(unittest.TestCase):
-    def test_handler_write_text(self):
+    @patch("src.gratitude.create_gratitude.CreateGratitude.create")
+    def test_handler_write_text(self, mock_create):
+        mock_create.return_value = {"gratitude": True}
         ret = handle(apigw_text_event(), "")
         body = json.loads(ret["body"])
         self.assertEqual(ret["statusCode"], "200")
-        self.assertEqual(body, {"event": {"grat": "Hello"}})
+        self.assertEqual(body, {"gratitude": True})
+        mock_create.assert_called_with(
+            "email@user.co.uk", datetime.fromtimestamp(1592487787), "IAGF Testing"
+        )
 
     @patch("logging.exception")
     @patch("urllib.parse.unquote_plus")

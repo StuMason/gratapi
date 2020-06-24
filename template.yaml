@@ -32,6 +32,28 @@ Globals:
 
 Resources:
 
+  GratitudesTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: "gratitudes"
+      AttributeDefinitions: 
+        - 
+          AttributeName: "email"
+          AttributeType: "S"
+        - 
+          AttributeName: "day"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "email"
+          KeyType: "HASH"
+        - 
+          AttributeName: "day"
+          KeyType: "RANGE"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
   Gratapi:
     Type: AWS::Serverless::Api
     Properties:
