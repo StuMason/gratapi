@@ -68,3 +68,11 @@ class TestCreateGatitude(unittest.TestCase):
         table.get_item(Key={"Id": "item-id"})["Item"].should.equal(
             {"Id": "item-id", "nest1": {"nest2": {"event_history": ["some_value"]}}}
         )
+
+    def test_create_timestamp_object(self):
+        client = CreateGratitude()
+        timestamp_object = client.createGratitudeOjbect(
+            "IAGF testing methods", request_datetime=datetime.today()
+        )
+        self.assertIsNotNone(timestamp_object["time"])
+        self.assertEqual(timestamp_object["gratitude"], "IAGF testing methods")

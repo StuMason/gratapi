@@ -15,7 +15,7 @@ def handle(event, context):
         gratitudes = CreateGratitude()
         create = gratitudes.create(
             event["requestContext"]["authorizer"]["claims"]["email"],
-            datetime.fromtimestamp(event["requestContext"]["requestTimeEpoch"]),
+            datetime.now(),
             event_body[0],
         )
 

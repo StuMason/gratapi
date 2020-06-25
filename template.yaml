@@ -69,14 +69,17 @@ Resources:
             UserPoolArn: "arn:aws:cognito-idp:eu-west-1:645571371616:userpool/eu-west-1_omQ17WWBq"
 
   GratapiWrite:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: .
       Handler: handler_write.handle
       Runtime: python3.7
+      Policies:
+        # Make this a statement for write access to specific resource
+        - AmazonDynamoDBFullAccess
       Events:
         Write:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /write
             RestApiId: !Ref Gratapi

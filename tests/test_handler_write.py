@@ -1,6 +1,5 @@
 import json
 import unittest
-from datetime import datetime
 from unittest.mock import patch
 
 from handler_write import handle
@@ -43,9 +42,7 @@ class TestHandlerWrite(unittest.TestCase):
         body = json.loads(ret["body"])
         self.assertEqual(ret["statusCode"], "200")
         self.assertEqual(body, {"gratitude": True})
-        mock_create.assert_called_with(
-            "email@user.co.uk", datetime.fromtimestamp(1592487787), "IAGF Testing"
-        )
+        mock_create.assert_called()
 
     @patch("logging.exception")
     @patch("urllib.parse.unquote_plus")
