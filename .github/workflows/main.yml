@@ -10,5 +10,6 @@ jobs:
       uses: StuMason/example-composite-action@v1.1
       with:
         who-to-greet: ${{ secrets.TEST_SECRET }}
+        boole: true
     - run: echo random-number ${{ steps.foo.outputs.random-number }} 
       shell: bash
